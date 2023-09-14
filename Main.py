@@ -7,7 +7,7 @@ import string
 from datetime import datetime
 
 # Инициализация бота
-bot = telebot.TeleBot('6486260194:AAF3Jb38r2cZUozpAReHWlYJWMhYFuJRJzs')
+bot = telebot.TeleBot('YOUR_TOKEN')
 
 # Создание DataFrame для хранения информации о сотрудниках
 data = pd.DataFrame(columns=['ID', 'Фамилия', 'Имя', 'Отчество','Должность', 'Проект', 'Дата прихода', 'Аватарка'])
@@ -201,7 +201,7 @@ def process_delete_employee(message):
 
         first_name, last_name = full_name
         print(first_name, last_name)
-        result = data[(data['Имя'] == first_name) & (data['Фамилия'] == last_name)]
+        result = data[(data['Фамилия'].str.lower()) | (data['Имя'].str.lower())]
         if not result.empty:
             if len(result) > 1:
                 bot.send_message(message.chat.id, "Найдено несколько сотрудников с таким именем и фамилией. Выберите сотрудника для удаления по ID:")
@@ -253,7 +253,7 @@ def process_edit_employee(message):
             bot.register_next_step_handler(message, process_edit_employee)
 
         first_name, last_name = full_name
-        result = data[(data['Имя'] == first_name) & (data['Фамилия'] == last_name)]
+        result = data[(data['Фамилия'].str.lower()) | (data['Имя'].str.lower())]
         if not result.empty:
             if len(result) > 1:
                 bot.send_message(message.chat.id, "Найдено несколько сотрудников с таким именем и фамилией. Выберите сотрудника по ID:")
